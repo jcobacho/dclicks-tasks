@@ -1,4 +1,4 @@
-import { Divider, IconButton, InputBase, Paper } from "@mui/material";
+import { Divider, IconButton, InputBase, Paper, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -6,49 +6,65 @@ import { addTask } from "./TaskSlice";
 
 function AddTaskForm() {
   const [title, setTitle] = useState("");
+  const [titleError, setTitleError] = useState(false);
+
   const taksState = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch()
 
   function HandleSubmit(ev) {
     ev.preventDefault()
-    const value = title.trim();
-    if (value.length < 2) return;
+    if (titleError)
+      return
 
-    dispatch(addTask({id: taksState.length + 1, title, completed:false, userId: 1}))
+    if (IsValid(title)){ 
+      setTitleError(true)     
+      return;
+    }
+
+    dispatch(addTask({id: taksState.length + 1, title: title.trim(), completed:false, userId: 1}))
     setTitle('')
+    setTitleError(false)
+  }
+
+  function IsValid(value: string){
+    return (value.trim().length < 1)
+  }
+
+  function HandleOnchange(ev) {
+    const value = ev.currentTarget.value.trim();
+    if (ev.currentTarget.value === ''){
+      setTitleError(false)
+    }else{
+      setTitleError(IsValid(value))
+
+    }
+    setTitle(ev.currentTarget.value)
 
   }
 
   return (
-    <Paper
-      component="form"
-      sx={{
-        p: "2px 4px",
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-        mb: "5px",
-        mt: "2rem"
-      }}
+    <form
+      // component="form"
+      
       onSubmit={HandleSubmit}
     >
-      <InputBase
+      <TextField
+      fullWidth      
+      placeholder="New Task"
+      value={title}
+      onChange={HandleOnchange}
+      error={titleError}
+      helperText={titleError ? "Must provide a title for your task" : ""}
+    />
+      {/* <InputBase
         sx={{ ml: 1, flex: 1 }}
         placeholder="New Task"
         inputProps={{ "aria-label": "New Task" }}
         value={title}
         onChange={e => setTitle(e.currentTarget.value)}
-      />
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton
-        color="primary"
-        sx={{ p: "10px" }}
-        aria-label="directions"
-        type="submit"
-      >
-        <AddIcon />
-      </IconButton>
-    </Paper>
+      /> */}
+      
+    </form>
   );
 }
 
