@@ -19,7 +19,7 @@ function App() {
       <AppBar>
         <Toolbar>
           <Typography variant="h6" component="div">
-            Dclicks TODO
+            Dclicks TASKS
           </Typography>
         </Toolbar>
       </AppBar>
