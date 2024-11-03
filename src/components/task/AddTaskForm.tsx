@@ -8,7 +8,6 @@ function AddTaskForm() {
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState(false);
 
-  const taksState = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch()
 
   function HandleSubmit(ev) {
@@ -21,7 +20,7 @@ function AddTaskForm() {
       return;
     }
 
-    dispatch(addTask({id: taksState.length + 1, title: title.trim(), completed:false, userId: 1}))
+    dispatch(addTask({id: crypto.randomUUID(), title: title.trim(), completed:false, userId: 1}))
     setTitle('')
     setTitleError(false)
   }
