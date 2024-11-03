@@ -36,12 +36,13 @@ function TaskItem({
         <Stack direction="row">
           <Checkbox
             edge="start"
-            inputProps={{ "aria-labelledby": item.title }}
+            inputProps={{ "aria-label": item.title }}
             checked={item.completed}
             onChange={HandleToggle}
+            title={item.completed ? "Uncomplete" : "Complete"}
           />
 
-          <IconButton aria-label="delete" onClick={handleClickOpen}>
+          <IconButton role="alert" onClick={handleClickOpen} title={"Delete"}>
             <DeleteIcon />
           </IconButton>
         </Stack>
