@@ -14,7 +14,7 @@ export default function TaskList({page, setPage}: {page: number, setPage: Functi
   const tasks = useAppSelector(state => state.task);
 
   const limit = 10
-  const count = Math.ceil((tasks.length + 1) / limit)
+  const count = Math.ceil((tasks.length) / limit)
   const records =  tasks.slice((page - 1) * limit, page * limit);
 
   function handleChange(_event: any, value: number){
