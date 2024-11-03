@@ -30,9 +30,8 @@ const taskSlice = createSlice({
       return [payload, ...state];
     },
     deleteTask: (state, { payload }) => {
-      sessionStorage.setItem("isAuthenticated", "true");
-      sessionStorage.setItem("user", `${JSON.stringify(state)}`);
-      return state;
+      return state.filter((task) => task.id !== payload);
+      
     }
   },
   extraReducers(builder) {

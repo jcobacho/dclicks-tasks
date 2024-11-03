@@ -2,7 +2,14 @@ import { Checkbox, IconButton, ListItem, ListItemText, Stack } from "@mui/materi
 import { TaskType } from "./TaskSlice";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-function TaskItem({ item }: { item: TaskType }) {
+
+function TaskItem({ item, setOpen, setToDelete }: { item: TaskType, setOpen: Function, setToDelete: Function}) {
+
+    const handleClickOpen = () => {
+        setToDelete(item.id)
+        setOpen(true);
+    };
+
   return (
     <ListItem
       secondaryAction={
@@ -12,7 +19,7 @@ function TaskItem({ item }: { item: TaskType }) {
             inputProps={{ "aria-labelledby": item.title }}
           />
 
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={handleClickOpen}>
             <DeleteIcon />
           </IconButton>
         </Stack>
