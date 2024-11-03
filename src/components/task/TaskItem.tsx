@@ -19,8 +19,7 @@ function TaskItem({
   setOpen: Function;
   setToDelete: Function;
 }) {
-
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleClickOpen = () => {
     setToDelete(item.id);
@@ -28,15 +27,13 @@ function TaskItem({
   };
 
   function HandleToggle() {
-
-    dispatch(toggleCompleteTask({id: item.id}))
-
+    dispatch(toggleCompleteTask({ id: item.id }));
   }
 
   return (
     <ListItem
       secondaryAction={
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row">
           <Checkbox
             edge="start"
             inputProps={{ "aria-labelledby": item.title }}
@@ -50,7 +47,11 @@ function TaskItem({
         </Stack>
       }
     >
-      <ListItemText primary={item.title} />
+      <ListItemText
+        primary={item.title}
+        style={{ wordBreak: "break-all" }}
+        primaryTypographyProps={{ fontSize: "22px", paddingRight: 8 }}
+      />
     </ListItem>
   );
 }
