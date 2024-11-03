@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { addTask } from "./TaskSlice";
 
-function AddTaskForm() {
+function AddTaskForm({setPage}: {setPage: Function}) {
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState(false);
 
@@ -21,8 +21,11 @@ function AddTaskForm() {
     }
 
     dispatch(addTask({id: crypto.randomUUID(), title: title.trim(), completed:false, userId: 1}))
+    // clears previous values and errors
     setTitle('')
     setTitleError(false)
+    // returns pager to first page to properly view created item
+    setPage(1)
   }
 
   function IsValid(value: string){
@@ -43,8 +46,7 @@ function AddTaskForm() {
 
   return (
     <form
-      // component="form"
-      
+     
       onSubmit={HandleSubmit}
     >
       <TextField
@@ -55,13 +57,6 @@ function AddTaskForm() {
       error={titleError}
       helperText={titleError ? "Must provide a title for your task" : ""}
     />
-      {/* <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="New Task"
-        inputProps={{ "aria-label": "New Task" }}
-        value={title}
-        onChange={e => setTitle(e.currentTarget.value)}
-      /> */}
       
     </form>
   );

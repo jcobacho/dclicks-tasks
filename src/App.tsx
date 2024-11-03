@@ -9,8 +9,11 @@ import {
 } from "@mui/material";
 import TaskList from "./components/task/TaskList";
 import AddTaskForm from "./components/task/AddTaskForm";
+import { useState } from "react";
 
 function App() {
+  const [page, setPage] = useState(1);
+
   return (
     <>
       <AppBar>
@@ -26,9 +29,9 @@ function App() {
           <Toolbar />
 
           <Paper>
-            <AddTaskForm />
+            <AddTaskForm setPage={setPage}/>
 
-            <TaskList />
+            <TaskList page={page} setPage={setPage}/>
           </Paper>
         </Box>
       </Container>
