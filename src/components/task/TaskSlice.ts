@@ -15,9 +15,20 @@ export const taskApi = createApi({
 
   endpoints: builder => ({
     getAllTasks: builder.query<TaskType[], void>({
-      query: () => ({
-        url: "todos/"
-      })
+      queryFn: async (_args, { dispatch }, _extraOptions, baseQuery) => {
+        try {
+          if (sessionStorage.hasOwnProperty("tasks")) {
+            return dispatch(loadSessionTasks());
+          } else {
+            return await baseQuery({
+              url: "todos/"
+            });
+          }
+        } catch (error) {
+          console.error(error?.message);
+          return { error: error?.message };
+        }
+      }
     })
   })
 });
@@ -26,15 +37,29 @@ const taskSlice = createSlice({
   name: "task",
   initialState: [] as TaskType[],
   reducers: {
+    loadSessionTasks: state => {
+      if (sessionStorage.hasOwnProperty("tasks")) {
+        const tasks = sessionStorage.getItem("tasks");
+        state = JSON.parse(tasks as string) as TaskType[];
+      }
+      return state;
+    },
     addTask: (state, { payload }) => {
-      return [payload, ...state];
+      const tasks = [payload, ...state];
+      sessionStorage.setItem("tasks", `${JSON.stringify(tasks)}`);
+      return tasks;
     },
     toggleCompleteTask: (state, { payload }) => {
-      return state.map((task) => (task.id === payload.id ? { ...task, completed: !task.completed } : task));
+      const tasks = state.map(task =>
+        task.id === payload.id ? { ...task, completed: !task.completed } : task
+      );
+      sessionStorage.setItem("tasks", `${JSON.stringify(tasks)}`);
+      return tasks;
     },
     deleteTask: (state, { payload }) => {
-      return state.filter((task) => task.id !== payload.id);
-      
+      const tasks = state.filter(task => task.id !== payload.id);
+      sessionStorage.setItem("tasks", `${JSON.stringify(tasks)}`);
+      return tasks;
     }
   },
   extraReducers(builder) {
@@ -42,7 +67,8 @@ const taskSlice = createSlice({
       taskApi.endpoints.getAllTasks.matchFulfilled,
       (state, { payload }) => {
         state = payload;        
-        sessionStorage.setItem("tasks", `${JSON.stringify(payload)}`);
+        if(payload)
+          sessionStorage.setItem("tasks", `${JSON.stringify(payload)}`);
 
         return state;
       }
@@ -51,7 +77,12 @@ const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-export const { addTask, deleteTask, toggleCompleteTask } = taskSlice.actions;
+export const {
+  addTask,
+  deleteTask,
+  toggleCompleteTask,
+  loadSessionTasks
+} = taskSlice.actions;
 
 // Exporting the generated methods from createApi
 export const { useGetAllTasksQuery } = taskApi;

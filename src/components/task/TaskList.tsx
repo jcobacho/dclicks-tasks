@@ -1,16 +1,18 @@
 // import * as React from 'react';
 import List from "@mui/material/List";
 import { TaskType, useGetAllTasksQuery } from "./TaskSlice";
-import { useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import TaskItem from "./TaskItem";
 import DeleteTaskDialog from "./DeleteTaskDialog";
 import { useState } from "react";
+import { loadSessionTasks } from "./TaskSlice";
+
 
 export default function TaskList() {
   const [toDelete, setToDelete] = useState(0)
-  const [open, setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);  
   const { isFetching } = useGetAllTasksQuery();
+
 
   const tasks = useAppSelector(state => state.task);
 
