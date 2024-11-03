@@ -10,13 +10,13 @@ export type TaskType = {
 export const taskApi = createApi({
   reducerPath: "taskApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://jsonplaceholder.typicode.com/`
+    baseUrl: `https://jsonplaceholder.typicode.com/users/1/`
   }),
 
   endpoints: builder => ({
     getAllTasks: builder.query<TaskType[], void>({
       query: () => ({
-        url: "todos/?userId=1",
+        url: "todos/",
       })
     })
   })
