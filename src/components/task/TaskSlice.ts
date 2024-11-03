@@ -29,8 +29,11 @@ const taskSlice = createSlice({
     addTask: (state, { payload }) => {
       return [payload, ...state];
     },
+    toggleCompleteTask: (state, { payload }) => {
+      return state.map((task) => (task.id === payload.id ? { ...task, completed: !task.completed } : task));
+    },
     deleteTask: (state, { payload }) => {
-      return state.filter((task) => task.id !== payload);
+      return state.filter((task) => task.id !== payload.id);
       
     }
   },
@@ -48,7 +51,7 @@ const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-export const { addTask, deleteTask } = taskSlice.actions;
+export const { addTask, deleteTask, toggleCompleteTask } = taskSlice.actions;
 
 // Exporting the generated methods from createApi
 export const { useGetAllTasksQuery } = taskApi;

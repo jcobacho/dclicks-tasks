@@ -15,7 +15,7 @@ export default function DeleteTaskDialog({open, setOpen, toDelete}: {open: boole
 
   const handleDelete = () => {
     // call dispatch delete with toDelete id
-    dispatch(deleteTask(toDelete))
+    dispatch(deleteTask({id:toDelete}))
     setOpen(false);
   };
 

@@ -1,14 +1,37 @@
-import { Checkbox, IconButton, ListItem, ListItemText, Stack } from "@mui/material";
+import {
+  Checkbox,
+  IconButton,
+  ListItem,
+  ListItemText,
+  Stack
+} from "@mui/material";
 import { TaskType } from "./TaskSlice";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useAppDispatch } from "../../store";
+import { toggleCompleteTask } from "./TaskSlice";
 
+function TaskItem({
+  item,
+  setOpen,
+  setToDelete
+}: {
+  item: TaskType;
+  setOpen: Function;
+  setToDelete: Function;
+}) {
 
-function TaskItem({ item, setOpen, setToDelete }: { item: TaskType, setOpen: Function, setToDelete: Function}) {
+  const dispatch = useAppDispatch()
 
-    const handleClickOpen = () => {
-        setToDelete(item.id)
-        setOpen(true);
-    };
+  const handleClickOpen = () => {
+    setToDelete(item.id);
+    setOpen(true);
+  };
+
+  function HandleToggle() {
+
+    dispatch(toggleCompleteTask({id: item.id}))
+
+  }
 
   return (
     <ListItem
@@ -17,6 +40,8 @@ function TaskItem({ item, setOpen, setToDelete }: { item: TaskType, setOpen: Fun
           <Checkbox
             edge="start"
             inputProps={{ "aria-labelledby": item.title }}
+            checked={item.completed}
+            onChange={HandleToggle}
           />
 
           <IconButton aria-label="delete" onClick={handleClickOpen}>
