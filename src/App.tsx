@@ -1,5 +1,6 @@
 import "./App.css";
 import { AppBar, Box, Container, Toolbar, Typography } from "@mui/material";
+import TaskList from "./components/task/TaskList";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Container maxWidth="sm">
         <Box sx={{ height: "100vh" }}>
           <Toolbar />
-task list
+            <TaskList />
         </Box>
       </Container>
     </>
