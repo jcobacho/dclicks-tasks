@@ -16,7 +16,7 @@ export const taskApi = createApi({
   endpoints: builder => ({
     getAllTasks: builder.query<TaskType[], void>({
       query: () => ({
-        url: "todos/",
+        url: "todos/"
       })
     })
   })
@@ -26,22 +26,30 @@ const taskSlice = createSlice({
   name: "task",
   initialState: [] as TaskType[],
   reducers: {
-    addTodo: (state, { payload }) => {
+    addTask: (state, { payload }) => {
       return [payload, ...state];
     },
-    deleteTodo: (state, { payload }) => {
+    deleteTask: (state, { payload }) => {
       sessionStorage.setItem("isAuthenticated", "true");
       sessionStorage.setItem("user", `${JSON.stringify(state)}`);
       return state;
     }
+  },
+  extraReducers(builder) {
+    builder.addMatcher(
+      taskApi.endpoints.getAllTasks.matchFulfilled,
+      (state, { payload }) => {
+        state = payload;        
+        sessionStorage.setItem("tasks", `${JSON.stringify(payload)}`);
+
+        return state;
+      }
+    );
   }
 });
 
-
 export default taskSlice.reducer;
-export const { addTodo, deleteTodo,  } = taskSlice.actions;
+export const { addTask, deleteTask } = taskSlice.actions;
 
 // Exporting the generated methods from createApi
-export const {
-	useGetAllTasksQuery,
-} = taskApi;
+export const { useGetAllTasksQuery } = taskApi;
