@@ -9,7 +9,8 @@ function AddTaskForm() {
   const taksState = useAppSelector((state) => state.task);
   const dispatch = useAppDispatch()
 
-  function HandleClick() {
+  function HandleSubmit(ev) {
+    ev.preventDefault()
     const value = title.trim();
     if (value.length < 2) return;
 
@@ -29,6 +30,7 @@ function AddTaskForm() {
         mb: "5px",
         mt: "2rem"
       }}
+      onSubmit={HandleSubmit}
     >
       <InputBase
         sx={{ ml: 1, flex: 1 }}
@@ -42,7 +44,7 @@ function AddTaskForm() {
         color="primary"
         sx={{ p: "10px" }}
         aria-label="directions"
-        onClick={HandleClick}
+        type="submit"
       >
         <AddIcon />
       </IconButton>
